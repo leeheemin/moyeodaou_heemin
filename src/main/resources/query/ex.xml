@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="testQuery">
+	<resultMap id="fileInfoList" type="hashmap">
+		<result property="fileName" column="FILE_NAME" javaType="java.lang.String"/>
+		<result property="who" column="MEMBER_NO" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<select id="selectName" resultType="java.lang.String">
+		select member_name from MEMBER_TB where email = 'test@daou.co.kr'
+	</select>
+
+	<!-- Upload 관련 query -->
+	<insert id="insertFile" parameterType="hashmap">
+	    INSERT INTO GROUP_FILE_TB (MEMBER_NO, GROUP_NO, UPLOAD_DATE, FILE_NAME, FILE_PATH) VALUES (12, 3, current_timestamp, #{FILE_ORIGINAL_NAME}, #{FILE_STORED_NAME})	 
+	</insert>
+	
+	<select id="showAllFile" resultMap="fileInfoList">
+		SELECT FILE_NAME, MEMBER_NO from GROUP_FILE_TB ORDER BY GROUP_FILE_NO ASC;
+	</select>
+		
+	
+	
+</mapper>
+
