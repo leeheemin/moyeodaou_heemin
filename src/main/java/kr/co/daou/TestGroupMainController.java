@@ -39,6 +39,7 @@ public class TestGroupMainController {
 	 */
 	@RequestMapping(value = "/testGroupMain")
 	public String init(Model model) {						// testGroupMain 페이지 초기화
+		System.out.println("init()");
 		// 공유 파일 목록 view에 출력
 		List<Map<String, Object>> sharing_list;				// 그룹의 모든 파일공유 목록 List
 		
@@ -53,6 +54,7 @@ public class TestGroupMainController {
 		model.addAttribute("sharing_list", sharing_list);
 		return "testGroupMain";
 	}
+	
 	@RequestMapping(value = "/fileUpload2", method=RequestMethod.POST)
 	public String fileUpload(HttpServletRequest req, HttpServletResponse rep){
 		String path = "c://abc/";							// 파일이 저장될 PATH
@@ -107,13 +109,29 @@ public class TestGroupMainController {
 		}
 		
 		uploadService.insert_fileinfo_DB(fileInfo_list);			// 파일 정보를 DB에 삽입하는 서비스
+	
+		// testGroupMain 페이지로 이동 
 		
-		return "testGroupMain";
+		return "redirect:/testGroupMain";
 	}
 	
 	// 서버에 저장할 랜덤 Filename
 	public static String getRandomName(){
 		return UUID.randomUUID().toString().replaceAll("-","");
+	}
+
+	// 그룹의 공유 파일 목록을 띄워주는 함수
+	public void show_group_file(){
+				// 공유 파일 목록 view에 출력
+				List<Map<String, Object>> sharing_list;				// 그룹의 모든 파일공유 목록 List
+				
+				sharing_list = initFileService.getFileList();
+				for(int i=0;i<sharing_list.size();i++){
+					Map<String, Object> map;
+					
+					map = sharing_list.get(i);						// list에서 파일 정보 get. (파일이름 / 게시자)
+					System.out.println(map.get("fileName") + "," + map.get("who"));
+				}
 	}
 	
 }
